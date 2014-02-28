@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Curious.</title>
+
+  <!-- CSS -->
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+
+  <!-- Javascript -->
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="{{ url_for('static', filename='js/tip.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+
+</head>
+
+<body>
+<div class="row-fluid">
+  <div class="span8 offset1">
+    {% block content %}{% endblock %}
+  </div>
+</div>
+</body>
+</html>

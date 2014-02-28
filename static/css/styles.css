@@ -1,0 +1,84 @@
+h1 { 
+  display: inline;
+  }
+
+body {
+  font: 14px sans-serif;
+  height: 100%;
+  shape-rendering: crispEdges;
+}
+
+a .yaxis-label, a:hover{
+  fill: grey;
+  text-decoration:none;
+}
+
+.minirule {
+  max-width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.entry-date {
+  font-size: 10px;
+}
+
+.legend {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top:  90px;
+  margin-left: 975px;
+}
+
+.day {
+  fill: #fff;
+  stroke: #ccc;
+}
+
+.month {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+.stream {
+  width: 300px;
+}
+
+/*.mood-1{background-color:rgba(244,109,67, .3)}
+.mood-2{background-color:rgba(254,224,139, .3)}
+.mood-3{background-color:rgba(217,239,139, .3)}
+.mood-4{background-color:rgba(102,189,99, .3)}
+.mood-5{background-color:rgba(0,104,55, .3)}*/
+
+.mood-1{color:rgba(244,109,67, 1)}
+.mood-2{color:rgba(254,224,139, 1)}
+.mood-3{color:rgba(217,239,139, 1)}
+.mood-4{color:rgba(102,189,99, 1)}
+.mood-5{color:rgba(0,104,55, 1)}
+
+.q0-11{fill:rgb(165,0,38)}
+.q1-11{fill:rgb(215,48,39)}
+.q2-11{fill:rgb(244,109,67)}
+.q3-11{fill:rgb(253,174,97)}
+.q4-11{fill:rgb(254,224,139)}
+.q5-11{fill:rgb(255,255,191)}
+.q6-11{fill:rgb(217,239,139)}
+.q7-11{fill:rgb(166,217,106)}
+.q8-11{fill:rgb(102,189,99)}
+.q9-11{fill:rgb(26,152,80)}
+.q10-11{fill:rgb(0,104,55)}
+
+.container { 
+  margin: 0, auto;
+  float: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  padding: 7px;
+  font-size: 12px;
+  background: grey;
+  color: white;
+}
