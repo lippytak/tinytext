@@ -4,8 +4,8 @@
     name="question_text"
     type="text"
     rows="4"
-    placeholder="What do you want to ask?"></textarea>
+    placeholder="What would you like to know? Keep it brief..."></textarea>
   
-  <br><button type="submit" class="btn btn-primary">Ask all {{ clients|length }} clients right now!</button>
+  <br><button type="submit" class="btn btn-primary">Ask all {{ clients|length }} clients right now!</button> <a href="{{ url_for('clients') }}">wait, who are these people?</a>
 </div>
 </form>

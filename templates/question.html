@@ -4,8 +4,8 @@
 <hr>
 <b>Stats</b>
 <ul class="stats">
-  <li>Sent to <b>{{ question.clients.all()|length }}</b> clients on {{ question.timestamp.strftime('%Y-%m-%d') }}</li>
-  <li><b>{{ question.answers.all()|length }}</b> people have answered so far.</li>
+  <li>Asked to <b>{{ question.clients.all()|length }}</b> clients on {{ question.timestamp.strftime('%Y-%m-%d') }}</li>
+  <li>People have sent in <b>{{ question.answers.all()|length }}</b> answers so far.</li>
 </ul>
 <hr>
 <b>Answers</b>

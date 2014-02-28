@@ -2,6 +2,7 @@
 {% block content %}
 <h1>Clients ({{ clients|length }})</h1>
 <hr>
+<b>Here are your nameless (for now) clients:</b>
 <ul class="clients">
   {% for c in clients %}
     <li>{{c.phone_number}}</li>
