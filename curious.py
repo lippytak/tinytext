@@ -45,8 +45,12 @@ def index(form = None):
 def sms():
   # get client
   from_number = request.values.get('From')
-  c = get_or_create_client(from_number)
+  c, status = get_or_create_client(from_number)
 
+  if status == 'new':
+    send_message(c.phone_number, render_template('welcome.html'))
+    return 'welcomed new client'
+  
   # get last q
   q = Question.get_most_recent_question()
 
@@ -62,6 +66,7 @@ def sms():
   db.session.add(q)
   db.session.add(a)
   db.session.commit()
+  return 'saved answer to most recent question'
 
 @app.route('/q/<q_id>')
 def question(q_id):
@@ -136,11 +141,13 @@ class QuestionForm(Form):
 def get_or_create_client(phone_number):
   '''Return an existing client or create a new one'''
   c = Client.query.filter_by(phone_number = phone_number).first()
+  status = 'old'
   if not c:
     c = Client(phone_number = phone_number)
+    status = 'new'
     db.session.add(c)
     db.session.commit()
-  return c
+  return c, status
 
 def send_question(question):
   '''Send a question to all clients and add question to client.questions array'''
