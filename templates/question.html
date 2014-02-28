@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>{{question.text}}</h1>
+<hr>
+<b>Stats</b>
+<ul class="stats">
+  <li>Sent to <b>{{ question.clients.all()|length }}</b> clients on {{ question.timestamp.strftime('%Y-%m-%d') }}</li>
+  <li><b>{{ question.answers.all()|length }}</b> people have answered so far.</li>
+</ul>
+<hr>
+<b>Answers</b>
+<ul class="answers">
+  {% for a in question.answers %}
+    <li class="answer">{{a.text}}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

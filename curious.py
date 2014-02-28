@@ -3,9 +3,10 @@ from random import choice
 from twilio.rest import TwilioRestClient
 from datetime import datetime, timedelta, date
 from babel.dates import format_datetime
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
+from wtforms import Form, BooleanField, TextField, TextAreaField, PasswordField, validators
 
 # Setup app
 app = Flask(__name__)
@@ -13,7 +14,7 @@ app.config['DEBUG'] = os.environ['DEBUG']
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
-# Routes
+# Views
 @app.errorhandler(404)
 def not_found(error):
     return render_template('error.html'), 404
@@ -27,14 +28,18 @@ def shutdown_session(exception=None):
     db.session.rollback()
 
 @app.route('/')
-def index():
+def index(form = None):
   slogans = [
     'Dead simple SMS feedback for nonprofits.',
     'Get anonymous feedback from your clients over text message.',
     'Ask anything. Get honest answers.'
     ]
   s = choice(slogans)
-  return render_template('index.html', slogan = s)
+  if form is None:
+    form = QuestionForm(request.form)
+  questions = Question.query.all()
+  clients = Client.query.all()
+  return render_template('index.html', slogan = s, questions = questions, form = form, clients = clients)
 
 @app.route('/sms')
 def sms():
@@ -57,6 +62,26 @@ def sms():
   db.session.add(q)
   db.session.add(a)
   db.session.commit()
+
+@app.route('/q/<q_id>')
+def question(q_id):
+  q = Question.query.get(q_id)
+  return render_template('question.html', question = q)
+
+@app.route('/clients')
+def clients():
+  clients = Client.query.all()
+  return render_template('clients.html', clients = clients)
+
+@app.route('/question_form', methods=['GET', 'POST'])
+def question_form():
+    form = QuestionForm(request.form)
+    if request.method == 'POST' and form.validate():
+        q = Question(form.question_text.data)
+        db.session.add(q)
+        send_question(q)
+        # flash('Thanks for registering')
+    return redirect(url_for('index'))
 
 # Models
 client_questions = db.Table('client_questions',
@@ -102,6 +127,10 @@ class Answer(db.Model):
 
     if timestamp is None:
       self.timestamp = datetime.utcnow()
+
+# Forms
+class QuestionForm(Form):
+    question_text = TextAreaField('Question',[validators.length(max=160, min=20)])
 
 # Utils
 def get_or_create_client(phone_number):

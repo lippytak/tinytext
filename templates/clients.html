@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Clients ({{ clients|length }})</h1>
+<hr>
+<ul class="clients">
+  {% for c in clients %}
+    <li>{{c.phone_number}}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

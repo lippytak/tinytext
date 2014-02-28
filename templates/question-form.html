@@ -1,0 +1,11 @@
+<form method=post action="/question_form">
+<div class="form-group">  
+  <textarea id="question_text"
+    name="question_text"
+    type="text"
+    rows="4"
+    placeholder="What do you want to ask?"></textarea>
+  
+  <br><button type="submit" class="btn btn-primary">Ask all {{ clients|length }} clients right now!</button>
+</div>
+</form>
