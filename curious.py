@@ -165,5 +165,8 @@ def send_message(phone_number, body):
   auth_token = os.environ['TWILIO_AUTH']
   twilio_number = os.environ['TWILIO_NUM']
   client = TwilioRestClient(account_sid, auth_token)
-  client.sms.messages.create(to=phone_number, from_=twilio_number, body=body[:160])
+  try:
+    client.sms.messages.create(to=phone_number, from_=twilio_number, body=body[:160])
+  except Exception:
+    pass
   return body
