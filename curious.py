@@ -40,7 +40,7 @@ def index():
 def sms():
   # get client
   from_number = request.values.get('From')
-  c = get_or_create_user(from_number)
+  c = get_or_create_client(from_number)
 
   # get last q
   q = Question.get_most_recent_question()
