@@ -83,7 +83,7 @@ def logout():
 
 @app.route('/')
 def index():
-  '''Renders either login page or logged in org page'''
+  '''Renders either login page or org home page'''
   s = choice(SLOGANS)
   if current_user.is_authenticated():
     form = QuestionForm(request.form)
@@ -232,6 +232,7 @@ class User(db.Model):
     '''Send a question to all clients and add question to client.questions array'''
     clients = self.clients
     body = question.text
+    self.questions.append(question)
     for c in clients:
       send_message(c.normalized_phone_number, body)
       c.questions.append(question)
