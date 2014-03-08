@@ -117,6 +117,8 @@ def sms():
   if msg[0] == '#':
     u = find_user_by_keyword_msg(msg)
     if u:
+      u.clients.append(c)
+      db.session.add(u)
       send_message(c.normalized_phone_number, render_template('welcome.html'))
       return 'client joined org'
     else:
