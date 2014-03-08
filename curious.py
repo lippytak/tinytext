@@ -228,7 +228,7 @@ class User(db.Model):
               secondary=user_clients,
               backref=db.backref('users', lazy='dynamic'))
 
-  def send_question(question):
+  def send_question(self, question):
     '''Send a question to all clients and add question to client.questions array'''
     clients = self.clients
     body = question.text
