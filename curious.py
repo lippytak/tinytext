@@ -135,7 +135,7 @@ def sms():
   q.answers.append(a)
   c.answers.append(a)
   c.questions.append(q)
-  db.session.add_all(c, q, a)
+  db.session.add_all([c, q, a])
   db.session.commit()
   return 'saved answer to most recent question'
 
