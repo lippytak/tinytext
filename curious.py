@@ -149,14 +149,14 @@ def question(q_id):
 def clients():
   return render_template('clients.html', clients = current_user.clients)
 
-@app.route('/question_form', methods=['GET', 'POST'])
-def question_form():
+@app.route('/question', methods=['POST'])
+def ask_question():
     form = QuestionForm(request.form)
     if request.method == 'POST' and form.validate():
         q = Question(form.question_text.data)
         db.session.add(q)
         current_user.send_question(q)
-        flash('Thanks for registering')
+        flash('Great question. Now be patient for responses.')
     return redirect(url_for('index'))
 
 # Models
