@@ -1,4 +1,5 @@
 import os, re
+from threading import Thread
 from IPython import embed
 from random import choice
 from twilio.rest import TwilioRestClient
@@ -49,18 +50,15 @@ def shutdown_session(exception=None):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+  s = choice(SLOGANS)
   form = LoginForm(request.form)
   if request.method == 'POST' and form.validate():
     user = form.get_user()
     login_user(user)
     flash("Yeehaw, you made it in!")
-    return redirect(url_for("index"))
-
   elif request.method == 'POST' and not form.validate():
     flash("I don't see an account with that phone #. Maybe try creating a new one?")
-    return render_template("login.html", form=form)
-
-  return render_template("login.html", form=form)
+  return redirect(url_for("index"))
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -72,8 +70,7 @@ def register():
       db.session.commit()
       login_user(u)
       flash("Welcome! Glad to have you.")
-      return redirect(url_for("index"))
-    return redirect(url_for("login"))
+    return redirect(url_for("index"))
 
 @app.route("/logout")
 @login_required
@@ -92,7 +89,7 @@ def index():
         form = form,
         user = current_user)
   else:
-    return render_template('login.html')
+    return render_template('login.html', slogan = s)
 
 @app.route("/<org_url>")
 def org(org_url):
@@ -144,10 +141,22 @@ def question(q_id):
   q = Question.query.get(q_id)
   return render_template('question.html', question = q)
 
-@app.route('/clients')
+@app.route('/clients', methods=['GET', 'POST'])
 @login_required
 def clients():
-  return render_template('clients.html', clients = current_user.clients)
+  form = ImportForm(request.form)
+  if request.method == 'POST' and form.validate():
+    phone_numbers = parse_phone_numbers(form.phone_numbers.data)
+    for p in phone_numbers:
+      try:
+        c, status = get_or_create_client(p)
+        current_user.clients.append(c)
+        db.session.add(c)
+      except Exception:
+        pass
+    flash("Nice import, bro!")
+    return redirect(url_for('index'))
+  return render_template('clients.html', user = current_user)
 
 @app.route('/question', methods=['POST'])
 def ask_question():
@@ -264,6 +273,15 @@ class User(db.Model):
 class QuestionForm(Form):
     question_text = TextAreaField('Question',[validators.length(max=160, min=20)])
 
+class ImportForm(Form):
+    phone_numbers = TextAreaField('Clients',[validators.required()])
+
+    def validate(self):
+      rv = Form.validate(self)
+      if not rv:
+        return False
+      return True
+
 class LoginForm(Form):
     phone_number = TextField(validators=[validators.required()])
 
@@ -305,14 +323,19 @@ class RegistrationForm(Form):
     return True
 
 # Utils
+def parse_phone_numbers(text):
+  #TODO some validation here?
+  return text.splitlines()
+
 def find_user_by_keyword_msg(msg):
   keyword = re.sub('#', '', msg.strip())
   user = User.query.filter_by(org_url = keyword).first()
   return user if user else None
 
 def normalize_phone_number(phone_number):
-  non_decimal = re.compile(r'[^\d]+')
-  return non_decimal.sub('', phone_number)
+  digits = re.compile(r'[^\d]+')
+  phone_digits = digits.sub('', phone_number)
+  return '1' + phone_digits if len(phone_digits) == 10 else phone_digits
 
 def org_nickname_to_url(org_nickname):
     url = re.sub('[!@#$]', '', org_nickname)

@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Curious.</h1>
-<p>{{slogan}}</p>
+<h1>Curious.</h1><p>{{ slogan }}</p>
 <hr>
 <div class="container">
-    {% include 'login-form.html' %}
-    {% include 'register-form.html' %}
+  <div class="mid">
+    <div class="left">{% include 'register-form.html' %}</div>
+    <div class="right">{% include 'login-form.html' %}</div>
+  </div>
 </div>
 
 {% endblock %}

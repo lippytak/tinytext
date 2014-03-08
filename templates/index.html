@@ -1,25 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>{{user.org_nickname}}</h1>
-<p>(<a href="/logout">log out</a>)</p>
+<h1>{{user.org_nickname}}</h1><span><a href="/logout"> (log out)</a></span>
 <hr>
 <div class="container">
-  <div class="left">
-    {% for q in user.questions %}
+  <div class="mid">
+  {% include 'question-form.html' %}
+  
+  <br><br>
+  <hr>
+    {% for q in user.questions|sort(attribute='timestamp', reverse=True) %}
     <p class="answer"><a href="{{ url_for('question', q_id = q.id) }}">{{q.text}}</a></p>
-
     <ul>
         {% for a in q.answers %}
         <li>{{a.text}}</li>
         {% endfor %}
     </ul>
-    <!-- <hr class="minirule"> -->
+    
     {% endfor %}
-  </div>
 
-  <div class="right">
-    {% include 'question-form.html' %}
-  </div>
+</div>
 </div>
 
 {% endblock %}

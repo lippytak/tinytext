@@ -1,11 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Clients ({{ clients|length }})</h1>
+<h1>{{user.org_nickname}}</h1><span><a href="/logout"> (log out)</a></span>
 <hr>
-<b>Here are your nameless (for now) clients:</b>
-<ul class="clients">
-  {% for c in clients %}
-    <li>{{c.normalized_phone_number}}</li>
-  {% endfor %}
-</ul>
+<div class="container">
+  <div class="mid">
+  {% include 'import-form.html' %}
+  
+  <br><br>
+  <hr>
+  <b>Current clients</b>
+  <ul class="clients">
+    {% for c in user.clients %}
+      <li>{{c.normalized_phone_number}}</li>
+    {% endfor %}
+  </ul>
+</div>
+</div>
 {% endblock %}
