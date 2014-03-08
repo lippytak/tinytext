@@ -1,4 +1,4 @@
-<form method=post action="/question_form">
+<form method=post action="/question">
 <div class="form-group">  
   <textarea id="question_text"
     name="question_text"
@@ -6,6 +6,6 @@
     rows="4"
     placeholder="What would you like to know? Keep it brief..."></textarea>
   
-  <br><button type="submit" class="btn btn-primary">Ask all {{ clients|length }} clients right now!</button> <a href="{{ url_for('clients') }}">wait, who are these people?</a>
+  <br><button type="submit" class="btn btn-primary">Ask all {{ user.clients|length }} clients right now!</button> <a href="{{ url_for('clients') }}">wait, who are these people?</a>
 </div>
 </form>

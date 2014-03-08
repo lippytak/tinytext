@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Curious.</h1>
+<p>{{slogan}}</p>
+<hr>
+<div class="container">
+    {% include 'login-form.html' %}
+    {% include 'register-form.html' %}
+</div>
+
+{% endblock %}
