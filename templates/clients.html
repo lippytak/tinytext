@@ -5,7 +5,7 @@
 <b>Here are your nameless (for now) clients:</b>
 <ul class="clients">
   {% for c in clients %}
-    <li>{{c.phone_number}}</li>
+    <li>{{c.normalized_phone_number}}</li>
   {% endfor %}
 </ul>
 {% endblock %}
