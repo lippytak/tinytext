@@ -20,12 +20,6 @@ db = SQLAlchemy(app)
 lm = LoginManager()
 lm.init_app(app)
 
-SLOGANS = [
-    'Dead simple SMS feedback for nonprofits.',
-    'Get anonymous feedback from your clients over text message.',
-    'Ask anything. Get honest answers.'
-    ]
-
 # Views
 @lm.user_loader
 def load_user(id):
@@ -50,12 +44,11 @@ def shutdown_session(exception=None):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-  s = choice(SLOGANS)
   form = LoginForm(request.form)
   if request.method == 'POST' and form.validate():
     user = form.get_user()
     login_user(user)
-    flash("Yeehaw, you made it in!")
+    # flash("Yeehaw, you made it in!")
   elif request.method == 'POST' and not form.validate():
     flash("I don't see an account with that phone #. Maybe try creating a new one?")
   return redirect(url_for("index"))
@@ -69,8 +62,8 @@ def register():
       db.session.add(u)
       db.session.commit()
       login_user(u)
-      flash("Welcome! Glad to have you.")
-    return redirect(url_for("index"))
+      flash("Welcome! Glad to have you. Start by adding some client cell numbers.")
+    return redirect(url_for("clients"))
 
 @app.route("/logout")
 @login_required
@@ -81,15 +74,17 @@ def logout():
 @app.route('/')
 def index():
   '''Renders either login page or org home page'''
-  s = choice(SLOGANS)
   if current_user.is_authenticated():
-    form = QuestionForm(request.form)
-    return render_template('index.html',
-        slogan = s,
-        form = form,
-        user = current_user)
+    if current_user.clients:
+      form = QuestionForm(request.form)
+      return render_template('index.html',
+          form = form,
+          user = current_user)
+    else:
+      flash('Great! Start by adding some client cell numbers.')
+      return redirect(url_for('clients'))
   else:
-    return render_template('login.html', slogan = s)
+    return render_template('login.html')
 
 @app.route("/<org_url>")
 def org(org_url):
@@ -145,6 +140,7 @@ def question(q_id):
 @login_required
 def clients():
   form = ImportForm(request.form)
+  success_count = 0
   if request.method == 'POST' and form.validate():
     phone_numbers = parse_phone_numbers(form.phone_numbers.data)
     for p in phone_numbers:
@@ -152,9 +148,12 @@ def clients():
         c, status = get_or_create_client(p)
         current_user.clients.append(c)
         db.session.add(c)
+        success_count += 1
       except Exception:
         pass
-    flash("Nice import, bro!")
+    flash('''Perfect, you just added %s new clients.
+          Now ask them something interesting!''' % success_count)
+
     return redirect(url_for('index'))
   return render_template('clients.html', user = current_user)
 

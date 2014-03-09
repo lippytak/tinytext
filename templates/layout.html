@@ -19,11 +19,12 @@
   <div class="span8 offset1">
     {% with messages = get_flashed_messages() %}
       {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
+          <div class="flashes">
+            <div class="alert alert-success">
+              {% for message in messages %}
+              <p>{{ message }}</p>
+              {% endfor %}
+        </div>
       {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}

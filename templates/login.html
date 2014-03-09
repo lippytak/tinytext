@@ -1,9 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Curious.</h1><p>{{ slogan }}</p>
+<h1>TinyText</h1>
+<h2>dead simple Q&A via text message</h2>
 <hr>
 <div class="container">
   <div class="mid">
+    <p>TinyText is an easy way to ask questions and get answers via text message. TinyText is...<ul>
+      <li>Free for nonprofits</li>
+      <li>In beta...meaning it works but don't get mad when it breaks :(</li>
+      <li>Designed and manufactured in CA by your <a href="http://twitter.com/lippytak">friends</a> at <a href="greatnonprofits.org">GreatNonprofits</a></li>
+      <li>Changing everyday! Send feedback/thoughts to <a href="mailto:jake@greatnonprofits.org">jake@greatnonprofits.org</a></p>
+
+    <hr>
     <div class="left">{% include 'register-form.html' %}</div>
     <div class="right">{% include 'login-form.html' %}</div>
   </div>

@@ -33,10 +33,11 @@ h1, h2 {
   display: inline;
 }
 
-textarea {
-  width: 100%;
+h2 {
+  color: darkgrey;
+  font-size: 1.5em;
 }
 
-.flashes {
-  display:none;
+textarea {
+  width: 100%;
 }
