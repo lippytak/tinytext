@@ -1,19 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>{{user.org_nickname}}</h1><span><a href="/logout"> (log out)</a></span>
-<hr>
-<div class="container">
-  <div class="mid">
+<div class="col-md-6">
+  <h3>Invite new clients to {{user.org_nickname}}</h3>
   {% include 'import-form.html' %}
-  
-  <br><br>
-  <hr>
-  <b>Current clients</b>
+</div>
+
+
+<div class="col-md-6">
+  <h3>Current clients</h1>
   <ul class="clients">
     {% for c in user.clients %}
       <li>{{c.normalized_phone_number}}</li>
     {% endfor %}
   </ul>
-</div>
 </div>
 {% endblock %}

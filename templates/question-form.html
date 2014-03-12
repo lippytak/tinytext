@@ -1,13 +1,14 @@
 <form method=post action="/question">
 <div class="form-group">  
-  <textarea id="question_text"
+  <textarea class="form-control"
+    id="question_form"
     name="question_text"
     type="text"
     rows="4"
-    placeholder="What would you like to know?                                                                  Ask anything but keep it brief..."></textarea>
+    placeholder="What would you like to know? Ask anything but keep it brief..."></textarea>
   
-  <br><button type="submit" class="btn btn-primary">Ask all {{ user.clients|length }} clients right now!</button>
-  <a href="{{ url_for('clients') }}">(or view / invite clients)</a>
-  
+  <br><button type="submit" class="btn btn-lg btn-primary">Ask all {{ user.clients|length }} clients right now!</button>
+  <a class="btn btn-lg btn-default" href="{{ url_for('clients') }}">Invite clients</a>
 </div>
+
 </form>

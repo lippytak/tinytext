@@ -4,31 +4,46 @@
   <meta charset="utf-8">
   <title>TinyText</title>
 
-  <!-- CSS -->
-  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- custom styles -->
   <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
 
-  <!-- Javascript -->
-  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <!-- JQuery -->
   <script src="http://code.jquery.com/jquery.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
 </head>
 
 <body>
-<div class="row-fluid">
-  <div class="span8 offset1">
+<div class="container">
+  <div class="header">
+    <!-- Flashes come above header -->
     {% with messages = get_flashed_messages() %}
-      {% if messages %}
-          <div class="flashes">
-            <div class="alert alert-success">
-              {% for message in messages %}
-              <p>{{ message }}</p>
-              {% endfor %}
-        </div>
-      {% endif %}
+    {% if messages %}
+    <div class="flashes">
+      <div class="alert alert-success">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
     {% endwith %}
-    {% block content %}{% endblock %}
+
+    <!-- Navbar -->
+    <ul class="nav nav-pills">
+      <!-- <li><a href="/">Home</a></li>
+      <li><a href="about">About</a></li>
+      <li><a href="stats">Stats</a></li> -->
+      <!-- Log out link if current_user -->
+      {% if current_user.is_authenticated() %}
+        <li style="float: right;"><a href="/logout">Sign out</a></li>
+      {% endif %}
+    </ul>
   </div>
-</div>
+  {% block content %}{% endblock %}
 </body>
 </html>

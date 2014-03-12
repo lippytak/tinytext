@@ -61,6 +61,7 @@ def register():
               org_nickname = form.org_nickname.data)
       db.session.add(u)
       db.session.commit()
+      send_message(u.normalized_phone_number, render_template('welcome-user.html'))
       login_user(u)
       flash("Welcome! Glad to have you. Start by adding some client cell numbers.")
     return redirect(url_for("clients"))
@@ -73,7 +74,7 @@ def logout():
 
 @app.route('/')
 def index():
-  '''Renders either login page or org home page'''
+  '''Renders either login page or org home page or client page'''
   if current_user.is_authenticated():
     if current_user.clients:
       form = QuestionForm(request.form)
@@ -126,7 +127,6 @@ def sms():
   # save + commit everything
   q.answers.append(a)
   c.answers.append(a)
-  c.questions.append(q)
   db.session.add_all([c, q, a])
   db.session.commit()
   return 'saved answer to most recent question'

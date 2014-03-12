@@ -1,24 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>{{user.org_nickname}}</h1><span><a href="/logout"> (log out)</a></span>
-<hr>
-<div class="container">
-  <div class="mid">
+
+<!-- New question form -->
+<div class="col-md-6">
+  <h3>Ask a question</h3>
   {% include 'question-form.html' %}
-  
-  <br><br>
-  <hr>
-    {% for q in user.questions|sort(attribute='timestamp', reverse=True) %}
-    <p class="answer"><a href="{{ url_for('question', q_id = q.id) }}">{{q.text}}</a></p>
-    <ul>
-        {% for a in q.answers %}
-        <li>{{a.text}}</li>
-        {% endfor %}
-    </ul>
-    
-    {% endfor %}
-
-</div>
 </div>
 
+<!-- Q&A -->
+<div class="col-md-6">
+<h3>See the answers</h3>
+{% for q in user.questions|sort(attribute='timestamp', reverse=True) %}
+<p class="question"><a href="{{ url_for('question', q_id = q.id) }}">{{q.text}}</a></h3>
+  <ul class="answers">
+      {% for a in q.answers %}
+      <li>{{a.text}}</li>
+      {% endfor %}
+  </ul>
+{% endfor %}
+</div>
 {% endblock %}
