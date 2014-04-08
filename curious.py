@@ -44,6 +44,11 @@ def shutdown_session(exception=None):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+  # GET > render form
+  if request.method == 'GET':
+    return render_template('login.html')
+
+  # POST > process form and send to index
   form = LoginForm(request.form)
   if request.method == 'POST' and form.validate():
     user = form.get_user()
@@ -85,7 +90,7 @@ def index():
       flash('Great! Start by adding some client cell numbers.')
       return redirect(url_for('clients'))
   else:
-    return render_template('login.html')
+    return render_template('home.html')
 
 @app.route("/<org_url>")
 def org(org_url):

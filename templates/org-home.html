@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>{{user.org_nickname}}</h1>
+<p>(<a href="/logout">log out</a>)</p>
+<hr>
+<div class="container">
+  <div class="left">
+    {% for q in user.questions %}
+    <p class="answer"><a href="{{ url_for('question', q_id = q.id) }}">{{q.text}}</a></p>
+
+    <ul>
+        {% for a in q.answers %}
+        <li>{{a.text}}</li>
+        {% endfor %}
+    </ul>
+    <!-- <hr class="minirule"> -->
+    {% endfor %}
+  </div>
+
+  <div class="right">
+    {% include 'question-form.html' %}
+  </div>
+</div>
+
+{% endblock %}
