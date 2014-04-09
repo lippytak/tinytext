@@ -44,6 +44,9 @@ def shutdown_session(exception=None):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+  if current_user.is_authenticated():
+    return redirect(url_for("index"))
+  
   # GET > render form
   if request.method == 'GET':
     return render_template('login.html')
@@ -53,7 +56,7 @@ def login():
   if request.method == 'POST' and form.validate():
     user = form.get_user()
     login_user(user)
-    # flash("Yeehaw, you made it in!")
+    # flash("Welcome back!")
   elif request.method == 'POST' and not form.validate():
     flash("I don't see an account with that phone #. Maybe try creating a new one?")
   return redirect(url_for("index"))
@@ -68,7 +71,7 @@ def register():
       db.session.commit()
       send_message(u.normalized_phone_number, render_template('welcome-user.html'))
       login_user(u)
-      flash("Welcome! Glad to have you. Start by adding some client cell numbers.")
+      flash("Welcome! Glad to have you. Start by adding some peeps to answer your questions.")
     return redirect(url_for("clients"))
 
 @app.route("/logout")
@@ -87,7 +90,7 @@ def index():
           form = form,
           user = current_user)
     else:
-      flash('Great! Start by adding some client cell numbers.')
+      flash('Great! Start by adding some peeps so you can ask them questions.')
       return redirect(url_for('clients'))
   else:
     return render_template('home.html')
