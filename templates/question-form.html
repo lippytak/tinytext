@@ -7,8 +7,8 @@
     rows="4"
     placeholder="What would you like to know? Ask anything but keep it brief..."></textarea>
   
-  <br><button type="submit" class="btn btn-lg btn-primary">Ask all {{ user.clients|length }} clients right now!</button>
-  <a class="btn btn-lg btn-default" href="{{ url_for('clients') }}">Invite clients</a>
+  <br><button type="submit" class="btn btn-lg btn-warning">Ask Your {{ user.clients|length }} Peeps Right Now!</button>
+  <a class="btn btn-lg btn-primary" href="{{ url_for('clients') }}">Add New Peeps</a>
 </div>
 
 </form>

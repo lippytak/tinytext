@@ -1,17 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="col-md-6">
-  <h3>Invite new clients to {{user.org_nickname}}</h3>
-  {% include 'import-form.html' %}
-</div>
-
-
-<div class="col-md-6">
-  <h3>Current clients</h1>
-  <ul class="clients">
+<div class="row">
+  <div class="col-md-6">
+    <h1>Add New Peeps</h1>
+    {% include 'import-form.html' %}
+  </div>
+  <div class="col-md-5 col-md-offset-1">
+    <h1>Your Peeps</h1>
+    <ul class="clients">
+    {% if user.clients|length == 0 %}
+    You don't have any yet :(
+    {% endif %}
     {% for c in user.clients %}
       <li>{{c.normalized_phone_number}}</li>
     {% endfor %}
   </ul>
+  </div>
 </div>
 {% endblock %}

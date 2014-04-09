@@ -26,6 +26,10 @@
   text-align: center;
 }
 
+#right-border {
+  border-left: thin solid grey;
+}
+
 .social {
   width: 45px;
 }
@@ -84,5 +88,11 @@ ul.nav.navbar-nav.navbar-right {
 
 .question {
   font-weight: bold;
-  font-size: 1.3em;
+  font-size: 150%;
+  color: grey;
+}
+
+.details {
+  font-size: 10;
+  color: grey;
 }

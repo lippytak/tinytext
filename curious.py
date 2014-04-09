@@ -141,7 +141,7 @@ def question(q_id):
   q = Question.query.get(q_id)
   return render_template('question.html', question = q)
 
-@app.route('/clients', methods=['GET', 'POST'])
+@app.route('/peeps', methods=['GET', 'POST'])
 @login_required
 def clients():
   form = ImportForm(request.form)
@@ -156,7 +156,7 @@ def clients():
         success_count += 1
       except Exception:
         pass
-    flash('''Perfect, you just added %s new clients.
+    flash('''Perfect, you just added %s new peeps.
           Now ask them something interesting!''' % success_count)
 
     return redirect(url_for('index'))

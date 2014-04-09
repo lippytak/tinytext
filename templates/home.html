@@ -1,19 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="row">
-  <div id="top" class="col-md-12"></div>
-</div>
-<div class="row">
   <div id="left" class="col-md-5">
     <img src="{{ url_for('static', filename='img/phone.png') }}" alt="TinyText">
   </div>
   <div id="right" class="col-md-7">
     <h1 id="title">What is TinyText?</h1>
-    <p class="tagline">TinyText is dead simple Q&A via text messaging. It's the easiest way for nonprofits to get feedback.</p>
+    <p class="tagline">TinyText is dead simple <b>Q&A over text message</b>. It's the easiest way for nonprofits to <b>get feedback</b>.</p>
     <a href="{{ url_for('login') }}"><button type="button" class="btn btn-warning btn-lg"><span class="button-text">Get Started for Free</span></button></a>
   </div>
-</div>
-<div class="row">
-  <div id="bottom" class="col-md-12"></div>
 </div>
 {% endblock %}
