@@ -1,4 +1,8 @@
 /*Jake custom styles*/
+#answer-box {
+  margin-bottom: 75px;
+}
+
 .alert {
   margin-top: 15px;
 }
