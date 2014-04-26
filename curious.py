@@ -42,6 +42,17 @@ def shutdown_session(exception=None):
   except:
     db.session.rollback()
 
+@app.route("/reset", methods=["GET", "POST"])
+def reset():
+  if current_user.is_authenticated():
+    c, status = get_or_create_client(from_number)
+    jake = get_or_create_client('+15102068727')
+    perla = get_or_create_client('+14159022659')
+    current_user.clients = [jake, perla]
+    db.session.add(current_user)
+    db.session.commit()
+  return redirect(url_for("index"))
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
   if current_user.is_authenticated():
