@@ -45,9 +45,8 @@ def shutdown_session(exception=None):
 @app.route("/reset", methods=["GET", "POST"])
 def reset():
   if current_user.is_authenticated():
-    c, status = get_or_create_client(from_number)
-    jake = get_or_create_client('+15102068727')
-    perla = get_or_create_client('+14159022659')
+    jake, status = get_or_create_client('+15102068727')
+    perla, status = get_or_create_client('+14159022659')
     current_user.clients = [jake, perla]
     db.session.add(current_user)
     db.session.commit()
