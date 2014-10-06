@@ -1,4 +1,6 @@
 import os, re
+import logging
+from logging.handlers import RotatingFileHandler
 from threading import Thread
 from IPython import embed
 from random import choice
@@ -19,6 +21,11 @@ app.secret_key = os.environ['SECRET_KEY']
 db = SQLAlchemy(app)
 lm = LoginManager()
 lm.init_app(app)
+
+# Logging
+handler = RotatingFileHandler('log.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+app.logger.addHandler(handler)
 
 # Views
 @lm.user_loader
@@ -103,7 +110,7 @@ def index():
       flash('Great! Start by adding some peeps so you can ask them questions.')
       return redirect(url_for('clients'))
   else:
-    return render_template('home.html')
+    return render_template('login.html')
 
 @app.route("/<org_url>")
 def org(org_url):
@@ -177,13 +184,13 @@ def clients():
 
 @app.route('/question', methods=['POST'])
 def ask_question():
-    form = QuestionForm(request.form)
-    if request.method == 'POST' and form.validate():
-        q = Question(form.question_text.data)
-        db.session.add(q)
-        current_user.send_question(q)
-        flash('Great question. Now be patient for responses.')
-    return redirect(url_for('index'))
+  form = QuestionForm(request.form)
+  if request.method == 'POST' and form.validate():
+      q = Question(form.question_text.data)
+      db.session.add(q)
+      current_user.send_question(q)
+      flash('Great question. Now be patient for responses.')
+  return redirect(url_for('index'))
 
 # Models
 user_clients = db.Table('user_clients',
@@ -288,7 +295,7 @@ class User(db.Model):
 
 # Forms
 class QuestionForm(Form):
-    question_text = TextAreaField('Question',[validators.length(max=160, min=20)])
+    question_text = TextAreaField('Question',[validators.required(), validators.length(max=160, min=10)])
 
 class ImportForm(Form):
     phone_numbers = TextAreaField('Clients',[validators.required()])
