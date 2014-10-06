@@ -2,11 +2,8 @@ import os, re
 import logging
 from logging.handlers import RotatingFileHandler
 from threading import Thread
-from IPython import embed
-from random import choice
 from twilio.rest import TwilioRestClient
 from datetime import datetime, date
-from babel.dates import format_datetime
 from flask import Flask, flash, request, render_template, redirect, url_for
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 from flask.ext.sqlalchemy import SQLAlchemy
