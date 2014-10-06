@@ -267,7 +267,8 @@ class User(db.Model):
     body = question.text
     self.questions.append(question)
     for c in clients:
-      send_message(c.normalized_phone_number, body)
+      thr = Thread(target=send_message, args=(c.normalized_phone_number, body))
+      thr.start()
       c.questions.append(question)
       db.session.add(c)
     db.session.commit()
@@ -389,7 +390,7 @@ def send_message(phone_number, body):
   try:
     client.messages.create(to=phone_number, from_=twilio_number, body=body[:160])
   except Exception:
-    pass
+    app.logger.warning('Failed to send message to %s)' % phone_number)
   return body
 
 # DB Utils
