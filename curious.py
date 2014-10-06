@@ -165,9 +165,15 @@ def clients():
         pass
     flash('''Perfect, you just added %s new peeps.
           Now ask them something interesting!''' % success_count)
-
     return redirect(url_for('index'))
   return render_template('clients.html', user = current_user)
+
+@app.route('/peeps/remove/<int:id>')
+@login_required
+def remove_client(id):
+  c = Client.query.get(id)
+  current_user.remove_client(c)
+  return redirect(url_for('clients'))
 
 @app.route('/question', methods=['POST'])
 def ask_question():
@@ -266,6 +272,11 @@ class User(db.Model):
       thr.start()
       c.questions.append(question)
       db.session.add(c)
+    db.session.commit()
+
+  def remove_client(self, client):
+    self.clients.remove(client)
+    db.session.add(self)
     db.session.commit()
   
   def is_authenticated(self):
