@@ -14,7 +14,7 @@
   <span class="question">{{q.text}}</span><span class="details"> (asked on {{ q.timestamp.strftime('%m/%d') }})
     <ul class="answers">
         {% for a in q.answers %}
-        <li>{{a.text}}</li>
+        <li>{{a.client.normalized_phone_number}} - {{a.text}}</li>
         {% endfor %}
     </ul>
     <br>
