@@ -4,7 +4,7 @@ from logging.handlers import RotatingFileHandler
 from threading import Thread
 from twilio.rest import TwilioRestClient
 from datetime import datetime, date
-from flask import Flask, flash, request, render_template, redirect, url_for
+from flask import Flask, flash, request, Response, render_template, redirect, url_for
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
@@ -45,16 +45,6 @@ def shutdown_session(exception=None):
     db.session.remove()
   except:
     db.session.rollback()
-
-@app.route("/reset", methods=["GET", "POST"])
-def reset():
-  if current_user.is_authenticated():
-    jake, status = get_or_create_client('+15102068727')
-    perla, status = get_or_create_client('+14159022659')
-    current_user.clients = [jake, perla]
-    db.session.add(current_user)
-    db.session.commit()
-  return redirect(url_for("index"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -188,6 +178,14 @@ def ask_question():
       current_user.send_question(q)
       flash('Great question. Now be patient for responses.')
   return redirect(url_for('index'))
+
+@app.route('/q/<q_id>/answers.csv')
+def generate_answers_csv(q_id):
+  answers = Question.query.get(q_id).answers
+  csv = ''
+  for a in answers:
+    csv += '%s, %s \n' % (a.client.normalized_phone_number, a.text)
+  return Response(csv, mimetype='text/csv')
 
 # Models
 user_clients = db.Table('user_clients',
@@ -405,12 +403,13 @@ def seed_db():
   a1 = Answer('First answer to first question')
   a2 = Answer('Second answer to first question')
   a3 = Answer('Answer to 2nd question')
+  more_answers = [Answer('Answer...') for a in range(10)]
   u1.questions.extend([q1, q2])
   u1.clients.extend([c1, c2])
   c1.questions.extend([q1, q2])
-  c1.answers.extend([a1, a3])
+  c1.answers.extend([a1, a3] + more_answers)
   c2.answers.extend([a2])
-  q1.answers.extend([a1, a2])
+  q1.answers.extend([a1, a2] + more_answers)
   q2.answers.append(a3)
-  db.session.add_all([u1, c1, c2, q1, q2, a1, a2, a3])
+  db.session.add_all([u1, c1, c2, q1, q2, a1, a2, a3] + more_answers)
   db.session.commit()
